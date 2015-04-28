@@ -2,7 +2,7 @@
   font-family: 'Fira Sans';
   font-style: normal;
   font-weight: 400;
-  src: local('Fira Sans'), local('FiraSans-Regular'), url(http://fonts.gstatic.com/s/firasans/v5/EjsrzDkQUQCDwsBtLpcVQVtXRa8TVwTICgirnJhmVJw.woff2) format('woff2'), url(http://fonts.gstatic.com/s/firasans/v5/EjsrzDkQUQCDwsBtLpcVQT8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
+  src: local('Fira Sans'), url('/theme/fonts/firasans.woff2') format('woff2'), url('/theme/fonts/firasans.woff') format('woff');
 }
 
 * {
