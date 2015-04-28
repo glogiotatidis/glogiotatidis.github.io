@@ -3,11 +3,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="It's around here, somewhere., ">
+    <meta name="description" content="It's around here, somewhere., My personal note keeping space on the internets">
 
         <link rel="alternate"  href="https://glogiotatidis.github.io/feeds/all.atom.xml" type="application/atom+xml" title="It's around here, somewhere. Full Atom Feed"/>
 
-        <title>It's around here, somewhere. // </title>
+        <title>It's around here, somewhere. // My personal note keeping space on the internets</title>
 
 
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.3.0/pure-min.css">
@@ -20,19 +20,19 @@
 <body>
     <div class="pure-g-r" id="layout">
         <div class="sidebar pure-u">
-            <div class="cover-img" style="background-image: url('theme/images/sidebar.jpg')">
+            <div class="cover-img" style="background-image: url('/theme/images/sidebar.jpg')">
                 <div class="cover-body">
                     <header class="header">
                         <hgroup>
                             <img class="avatar" src="http://0.gravatar.com/avatar/7b74caf316a6c6716977fe84b56774c1?s=200x200">
                             <h1 class="brand-main"><a href="https://glogiotatidis.github.io">It's around here, somewhere.</a></h1>
-                            <p class="tagline"></p>
+                            <p class="tagline">My personal note keeping space on the internets</p>
                                 <p class="social">
-                                    <a href="#">
-                                        <i class="fa fa-You can add links in your config file fa-3x"></i>
+                                    <a href="https://github.com/glogiotatidis/">
+                                        <i class="fa fa-github fa-3x"></i>
                                     </a>
-                                    <a href="#">
-                                        <i class="fa fa-Another social link fa-3x"></i>
+                                    <a href="https://twitter.com/glogiotatidis">
+                                        <i class="fa fa-twitter-square fa-3x"></i>
                                     </a>
                                 </p>
                         </hgroup>
@@ -47,6 +47,16 @@
                 <h1 class="content-subhead">
                             Latest posts
                 </h1>
+                    <section class="post">
+                        <header class="post-header">
+                            <h3><a class="post-title" href="https://glogiotatidis.github.io/duplicity-scp-backend-weirdness.html">Duplicity scp backend weirdness</a></h3>
+                            <p class="post-meta"><p>I'm a big fan of <a href="http://duplicity.nongnu.org/">Duplicity</a> and I use to backup my laptop to my office based server over <code>scp</code> which in its turn encrypts everything with <a href="https://en.wikipedia.org/wiki/EncFS">EncFS</a> and syncs everything up to my <a href="http://spideroak.com/">SpiderOak</a> account. I was going under a typical maintenance today and I run <code>duplicity collection-status</code> to see how many backup sets I have.</p>
+<p>Surprisingly duplicity returned only one full backup set more than a year old and no other backup sets. After some digging I found that the returned backup set was indeed the only full set I had but besides that I had many ...</p></p>
+                            <p class="post-meta">
+                                in <a href="https://glogiotatidis.github.io/category/misc.html">misc</a> &middot; Tue 28 April 2015
+                            </p>
+                        </header>
+                    </section>
 <div class="pagination-wrapper content-subhead">
 </div><footer class="footer">
     <p>&copy; Giorgos &ndash;

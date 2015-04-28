@@ -7,14 +7,21 @@
 
         <link rel="alternate"  href="https://glogiotatidis.github.io/feeds/all.atom.xml" type="application/atom+xml" title="It's around here, somewhere. Full Atom Feed"/>
 
-        <title>all posts // It's around here, somewhere. // My personal note keeping space on the internets</title>
+        <title>Duplicity scp backend weirdness // It's around here, somewhere. // My personal note keeping space on the internets</title>
 
 
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.3.0/pure-min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://glogiotatidis.github.io/theme/css/pure.css">
+    <link rel="stylesheet" href="https://glogiotatidis.github.io/theme/css/pygments.css">
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fitvids/1.0.1/jquery.fitvids.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".content").fitVids();
+        });
+    </script>
 </head>
 
 <body>
@@ -40,14 +47,27 @@
                 </div>
             </div>
         </div>
-    <div class="pure-u-1">
+    <div class="pure-u">
         <div class="content">
-            <h1 class="content-subhead">All posts</h1>
-                <div class="archive-item">
-                    <h5 class="archive-date">2015</h5>
-                    <h4 class="archive-date">28 April</h4>
-                    <div class="archive-post"><a href="duplicity-scp-backend-weirdness.html">Duplicity scp backend weirdness</a></div>
-                </div>
+            <section class="post">
+                <header class="post-header">
+                    <h1>Duplicity scp backend weirdness</h1>
+                        <p class="post-meta">
+                            // under                                 <a class="post-category" href="https://glogiotatidis.github.io/tag/ops.html">ops</a>
+                        </p>
+                </header>
+            </section>
+            <p>I'm a big fan of <a href="http://duplicity.nongnu.org/">Duplicity</a> and I use to backup my laptop to my office based server over <code>scp</code> which in its turn encrypts everything with <a href="https://en.wikipedia.org/wiki/EncFS">EncFS</a> and syncs everything up to my <a href="http://spideroak.com/">SpiderOak</a> account. I was going under a typical maintenance today and I run <code>duplicity collection-status</code> to see how many backup sets I have.</p>
+<p>Surprisingly duplicity returned only one full backup set more than a year old and no other backup sets. After some digging I found that the returned backup set was indeed the only full set I had but besides that I had many incremental sets. Re-running the collection-status command returns some of the incremental backup sets and running it for a third time I get different -smaller- number of sets. My initial thought was that duplicity broke due to the large number of incremental sets or maybe EncFS cannot handle that many files in the same directory.</p>
+<p>Fortunately duplicity has a very verbose log setting <code>-v 9</code> which returned interesting SSH logs</p>
+<div class="highlight"><pre>ssh: [chan 1] Sesch channel 1 request ok
+ssh: [chan 1] EOF received (1)
+ssh: [chan 1] EOF sent (1)
+</pre></div>
+
+
+<p>I tried the <code>--timeout</code> flag to increase timeout with no luck. Finally running duplicity with the <code>sftp</code> backend made the problem go away. All my backup sets were available and nothing strange in the SSH logs. I do not have any hard facts on why I chose to go with <code>scp</code> backend in the first place but it appears to be less stable compared to <code>sftp</code>, albeit this is the first time I run into problems with it.</p>
+            <a href="#" class="go-top">Go Top</a>
 <footer class="footer">
     <p>&copy; Giorgos &ndash;
         Built with <a href="https://github.com/PurePelicanTheme/pure-single">Pure Theme</a>
