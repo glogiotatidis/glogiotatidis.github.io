@@ -7,14 +7,21 @@
 
         <link rel="alternate"  href="https://glogiotatidis.github.io/feeds/all.atom.xml" type="application/atom+xml" title="It's around here, somewhere. Full Atom Feed"/>
 
-        <title>all posts // It's around here, somewhere. // My personal note keeping space on the internets</title>
+        <title>List the extensions of files under a directory // It's around here, somewhere. // My personal note keeping space on the internets</title>
 
 
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.3.0/pure-min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://glogiotatidis.github.io/theme/css/pure.css">
+    <link rel="stylesheet" href="https://glogiotatidis.github.io/theme/css/pygments.css">
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fitvids/1.0.1/jquery.fitvids.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".content").fitVids();
+        });
+    </script>
 </head>
 
 <body>
@@ -40,24 +47,56 @@
                 </div>
             </div>
         </div>
-    <div class="pure-u-1">
+    <div class="pure-u">
         <div class="content">
-            <h1 class="content-subhead">All posts</h1>
-                <div class="archive-item">
-                    <h5 class="archive-date">2015</h5>
-                    <h4 class="archive-date">15 June</h4>
-                    <div class="archive-post"><a href="list-the-extensions-of-files-under-a-directory.html">List the extensions of files under a directory</a></div>
-                </div>
-                <div class="archive-item">
-                    <h5 class="archive-date">2015</h5>
-                    <h4 class="archive-date">05 May</h4>
-                    <div class="archive-post"><a href="dont-hesitate-to-get-a-vps-to-do-your-work.html">Don't hesitate to get a VPS to do your work.</a></div>
-                </div>
-                <div class="archive-item">
-                    <h5 class="archive-date">2015</h5>
-                    <h4 class="archive-date">28 April</h4>
-                    <div class="archive-post"><a href="duplicity-scp-backend-weirdness.html">Duplicity scp backend weirdness</a></div>
-                </div>
+            <section class="post">
+                <header class="post-header">
+                    <h1>List the extensions of files under a directory</h1>
+                        <p class="post-meta">
+                            // under                                 <a class="post-category" href="https://glogiotatidis.github.io/tag/ops.html">ops</a>
+                        </p>
+                </header>
+            </section>
+            <p>I want to list the extensions of filenames in a directory, sorted and unique.</p>
+<p>First list all the files, leaving out directories using:</p>
+<div class="highlight"><pre>find -type f .
+</pre></div>
+
+
+<p>Then use <a href="https://en.wikipedia.org/wiki/AWK">awk</a> to get the last three characters of each line, i.e. filename.</p>
+<div class="highlight"><pre>find . -type f | awk &#39;{ print substr( $0, length($0) - 3, 4) }&#39;
+</pre></div>
+
+
+<p>AWK's <code>substr</code> function extracts four characters (last argument) of string $0 (first argument) starting at full lenth of the string minus three characters (second argument).</p>
+<p>This will list the extensions from all files in the current directory and all directories below.</p>
+<p>Now <code>sort</code> and <code>uniq</code> the output of the previous command for a short list all of different extensions used.</p>
+<div class="highlight"><pre>find . -type f | awk &#39;{ print substr( $0, length($0) - 3, 4) }&#39; | sort | uniq
+</pre></div>
+
+
+<p>Bear in mind that <code>sort</code> has to come before <code>uniq</code>.</p>
+<p>Lastly I'll translate to lower case all the extensions, before sort and uniq, to make the filtering case insensitive:</p>
+<div class="highlight"><pre>find . -type f | awk &#39;{ print substr( $0, length($0) - 3, 4) }&#39; | tr &#39;[:upper:]&#39; &#39;[:lower:]&#39; | sort | uniq
+</pre></div>
+
+
+<p>Final output of the command is</p>
+<div class="highlight"><pre><span class="na">.avi</span>
+<span class="na">.idx</span>
+<span class="na">.jpg</span>
+<span class="na">.m4v</span>
+<span class="na">.mkv</span>
+<span class="na">.mp4</span>
+<span class="na">.nfo</span>
+<span class="na">.png</span>
+<span class="na">.smi</span>
+<span class="na">.srt</span>
+<span class="na">.sub</span>
+<span class="na">.txt</span>
+<span class="na">.url</span>
+</pre></div>
+            <a href="#" class="go-top">Go Top</a>
 <footer class="footer">
     <p>&copy; Giorgos &ndash;
         Built with <a href="https://github.com/PurePelicanTheme/pure-single">Pure Theme</a>

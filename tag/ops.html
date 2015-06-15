@@ -48,6 +48,28 @@
 Posts tagged 'ops'                </h1>
                     <section class="post">
                         <header class="post-header">
+                            <h3><a class="post-title" href="https://glogiotatidis.github.io/list-the-extensions-of-files-under-a-directory.html">List the extensions of files under a directory</a></h3>
+                            <p class="post-meta"><p>I want to list the extensions of filenames in a directory, sorted and unique.</p>
+<p>First list all the files, leaving out directories using:</p>
+<div class="highlight"><pre>find -type f .
+</pre></div>
+
+
+<p>Then use <a href="https://en.wikipedia.org/wiki/AWK">awk</a> to get the last three characters of each line, i.e. filename.</p>
+<div class="highlight"><pre>find . -type f | awk &#39;{ print substr( $0, length($0) - 3, 4) }&#39;
+</pre></div>
+
+
+<p>AWK's <code>substr</code> function extracts four characters (last argument) of string $0 (first argument) starting at full lenth of the string minus three characters (second argument).</p>
+<p>This will list the extensions from all files in the current directory and all directories below.</p>
+<p>Now <code>sort</code> and <code>uniq</code> the output ...</p></p>
+                            <p class="post-meta">
+                                in <a href="https://glogiotatidis.github.io/category/misc.html">misc</a> &middot; Mon 15 June 2015
+                            </p>
+                        </header>
+                    </section>
+                    <section class="post">
+                        <header class="post-header">
                             <h3><a class="post-title" href="https://glogiotatidis.github.io/duplicity-scp-backend-weirdness.html">Duplicity scp backend weirdness</a></h3>
                             <p class="post-meta"><p>I'm a big fan of <a href="http://duplicity.nongnu.org/">Duplicity</a> and I use to backup my laptop to my office based server over <code>scp</code> which in its turn encrypts everything with <a href="https://en.wikipedia.org/wiki/EncFS">EncFS</a> and syncs everything up to my <a href="http://spideroak.com/">SpiderOak</a> account. I was going under a typical maintenance today and I run <code>duplicity collection-status</code> to see how many backup sets I have.</p>
 <p>Surprisingly duplicity returned only one full backup set more than a year old and no other backup sets. After some digging I found that the returned backup set was indeed the only full set I had but besides that I had many ...</p></p>

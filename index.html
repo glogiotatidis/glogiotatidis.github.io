@@ -49,6 +49,28 @@
                 </h1>
                     <section class="post">
                         <header class="post-header">
+                            <h3><a class="post-title" href="https://glogiotatidis.github.io/list-the-extensions-of-files-under-a-directory.html">List the extensions of files under a directory</a></h3>
+                            <p class="post-meta"><p>I want to list the extensions of filenames in a directory, sorted and unique.</p>
+<p>First list all the files, leaving out directories using:</p>
+<div class="highlight"><pre>find -type f .
+</pre></div>
+
+
+<p>Then use <a href="https://en.wikipedia.org/wiki/AWK">awk</a> to get the last three characters of each line, i.e. filename.</p>
+<div class="highlight"><pre>find . -type f | awk &#39;{ print substr( $0, length($0) - 3, 4) }&#39;
+</pre></div>
+
+
+<p>AWK's <code>substr</code> function extracts four characters (last argument) of string $0 (first argument) starting at full lenth of the string minus three characters (second argument).</p>
+<p>This will list the extensions from all files in the current directory and all directories below.</p>
+<p>Now <code>sort</code> and <code>uniq</code> the output ...</p></p>
+                            <p class="post-meta">
+                                in <a href="https://glogiotatidis.github.io/category/misc.html">misc</a> &middot; Mon 15 June 2015
+                            </p>
+                        </header>
+                    </section>
+                    <section class="post">
+                        <header class="post-header">
                             <h3><a class="post-title" href="https://glogiotatidis.github.io/dont-hesitate-to-get-a-vps-to-do-your-work.html">Don't hesitate to get a VPS to do your work.</a></h3>
                             <p class="post-meta"><p>This is not going to be one of these posts about how I got a super slim, slick machine or tablet and I moved all my work in the cloud. Fortunately this is old news and nobody talks about it. That being said I have been working on VPS machines for the last 6 months for some tasks.</p>
 <p>When your bandwidth is not enough for what you've to do renting a VPS is a great option. I've seen speeds up to 200MB/s on the cheap <a href="http://digitalocean.com/">DigitalOcean</a> or <a href="http://vultr.com/">Vultr</a> VPS, with the later being faster most of the ...</p></p>
