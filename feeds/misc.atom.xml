@@ -1,5 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>It's around here, somewhere.</title><link href="https://glogiotatidis.github.io/" rel="alternate"></link><link href="https://glogiotatidis.github.io/feeds/misc.atom.xml" rel="self"></link><id>https://glogiotatidis.github.io/</id><updated>2015-06-15T00:00:00+02:00</updated><entry><title>List the extensions of files under a directory</title><link href="https://glogiotatidis.github.io/list-the-extensions-of-files-under-a-directory.html" rel="alternate"></link><updated>2015-06-15T00:00:00+02:00</updated><author><name>Giorgos</name></author><id>tag:glogiotatidis.github.io,2015-06-15:list-the-extensions-of-files-under-a-directory.html</id><summary type="html">&lt;p&gt;I want to list the extensions of filenames in a directory, sorted and unique.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>It's around here, somewhere.</title><link href="https://glogiotatidis.github.io/" rel="alternate"></link><link href="https://glogiotatidis.github.io/feeds/misc.atom.xml" rel="self"></link><id>https://glogiotatidis.github.io/</id><updated>2015-10-13T00:00:00+02:00</updated><entry><title>Fleet job to remove unused docker images</title><link href="https://glogiotatidis.github.io/fleet-job-to-remove-unused-docker-images.html" rel="alternate"></link><updated>2015-10-13T00:00:00+02:00</updated><author><name>Giorgos</name></author><id>tag:glogiotatidis.github.io,2015-10-13:fleet-job-to-remove-unused-docker-images.html</id><summary type="html">&lt;p&gt;In Engagement Engineering, the team I'm part of at
+&lt;a href="https://www.mozilla.org"&gt;Mozilla&lt;/a&gt;, we run two &lt;a href="https://deis.io"&gt;Deis&lt;/a&gt;
+clusters on AWS to host important websites including www.mozilla.org.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://deis.io"&gt;Deis&lt;/a&gt; is a Heroku-inspired PaaS which utilizes
+&lt;a href="http://coreos.com/"&gt;CoreOS&lt;/a&gt; and &lt;a href="http://docker.io/"&gt;Docker&lt;/a&gt;. It's a
+great open-source project,
+&lt;a href="https://github.com/deis/deis"&gt;developed in the public&lt;/a&gt;, with a great
+Community and commercially backed by Engine Yard.&lt;/p&gt;
+&lt;p&gt;Apps on Deis run within Docker containers which run on CoreOS machines
+that form the Deis cluster. Each new release of your code, i.e. each
+new &lt;em&gt;deis pull&lt;/em&gt; or &lt;em&gt;git push&lt;/em&gt;, creates a new Docker image that is
+stored in the internal Deis Docker Registry and downloaded onto the
+CoreOS machines that are scheduled to run your code.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/mozilla/bedrock"&gt;Bedrock&lt;/a&gt; (the project name for
+www.mozilla.org) is a big website. It's Docker image weights about
+600MiB with all the translations, images and python dependencies. On
+every new release of Bedrock, which happens almost every day, the
+machines of our cluster pulled and stored about half a gig of space
+only for bedrock.&lt;/p&gt;
+&lt;p&gt;Since all the Docker images are stored in the internal Deis Docker
+Registry anyway there is no need to store the stopped older docker
+containers or their images in the individual CoreOS instances. If we
+need to revert to an older release of Bedrock the machines will pull
+the needed layers from the Deis Docker Registry again.&lt;/p&gt;
+&lt;p&gt;We built and deployed a &lt;a href="https://github.com/coreos/fleet"&gt;Fleet&lt;/a&gt;
+Service to remove the unused images:&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;docker-cleanup.service&lt;/em&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;
+&lt;span class="na"&gt;Description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;Clean up unused docker containers and images&lt;/span&gt;
+
+&lt;span class="k"&gt;[Service]&lt;/span&gt;
+&lt;span class="na"&gt;Type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;oneshot&lt;/span&gt;
+&lt;span class="na"&gt;ExecStart&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;/bin/bash -c &amp;#39;CONTAINERS=`docker ps -a -q -f status=exited`; if [[ ! -z $CONTAINERS ]]; then docker rm -v $CONTAINERS; fi; IMAGES=`docker images -f dangling=true -q`; if [[ ! -z $IMAGES ]]; then docker rmi $IMAGES; fi; echo &amp;quot;Completed docker image cleanup.&amp;quot;&amp;#39;&lt;/span&gt;
+
+&lt;span class="k"&gt;[Install]&lt;/span&gt;
+&lt;span class="na"&gt;WantedBy&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;multi-user.target&lt;/span&gt;
+
+&lt;span class="k"&gt;[X-Fleet]&lt;/span&gt;
+&lt;span class="na"&gt;Global&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;true&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The Service checks if there're any containers which are &lt;em&gt;exited&lt;/em&gt; and
+removes them. Similarly checks if there are any &lt;em&gt;dangling&lt;/em&gt; docker
+images and removes them too. Prints the &lt;em&gt;Completed docker image
+cleanup&lt;/em&gt; text in the end so we can check through the
+&lt;a href="https://deadmanssnitch.com/"&gt;Dead Mans Snitch&lt;/a&gt; that the job run.&lt;/p&gt;
+&lt;p&gt;The &lt;em&gt;X-fleet&lt;/em&gt; directive instructs Fleet to run this service on each
+and every machine of the cluster.&lt;/p&gt;
+&lt;p&gt;You can run this service and cleanup the images immediatelly with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;fleetctl start docker-cleanup.service
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We also built a timer unit to schedule daily cleanups to keep things
+clean and tidy without our interaction:&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;docker-cleanup.timer&lt;/em&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;
+&lt;span class="na"&gt;Description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;Trigger clean up of unused docker containers and images&lt;/span&gt;
+
+&lt;span class="k"&gt;[Timer]&lt;/span&gt;
+&lt;span class="na"&gt;OnCalendar&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;daily&lt;/span&gt;
+
+&lt;span class="k"&gt;[X-Fleet]&lt;/span&gt;
+&lt;span class="na"&gt;Global&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;true&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;After loading the cleanup service, load and start the timer&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;fleetctl load docker-cleanup.service
+fleetctl load docker-cleanup.timer
+fleetctl start docker-cleanup.timer
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;and the docker-cleanup.service will run &lt;em&gt;daily&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Note that &lt;em&gt;fleetctl list-units&lt;/em&gt; will list your
+&lt;em&gt;docker-cleanup.service&lt;/em&gt; as &lt;em&gt;dead&lt;/em&gt; which is OK. It will run as
+expected when the &lt;em&gt;waiting&lt;/em&gt; &lt;em&gt;docker-cleanup.timer&lt;/em&gt; unit triggers.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;core@ip-10-0-0-0 ~ $ fleetctl list-units
+UNIT                    MACHINE         ACTIVE      SUB
+docker-cleanup.service          1c919e41.../10.0.0.0    inactive    dead
+docker-cleanup.timer            1c919e41.../10.0.0.0    active      waiting
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="Mozilla"></category><category term="Docker"></category><category term="ops"></category></entry><entry><title>List the extensions of files under a directory</title><link href="https://glogiotatidis.github.io/list-the-extensions-of-files-under-a-directory.html" rel="alternate"></link><updated>2015-06-15T00:00:00+02:00</updated><author><name>Giorgos</name></author><id>tag:glogiotatidis.github.io,2015-06-15:list-the-extensions-of-files-under-a-directory.html</id><summary type="html">&lt;p&gt;I want to list the extensions of filenames in a directory, sorted and unique.&lt;/p&gt;
 &lt;p&gt;First list all the files, leaving out directories using:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;find -type f .
 &lt;/pre&gt;&lt;/div&gt;

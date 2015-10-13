@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="It's around here, somewhere., My personal note keeping space on the internets">
+
+        <link rel="alternate"  href="https://glogiotatidis.github.io/feeds/all.atom.xml" type="application/atom+xml" title="It's around here, somewhere. Full Atom Feed"/>
+
+        <title>Fleet job to remove unused docker images // It's around here, somewhere. // My personal note keeping space on the internets</title>
+
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.3.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://glogiotatidis.github.io/theme/css/pure.css">
+    <link rel="stylesheet" href="https://glogiotatidis.github.io/theme/css/pygments.css">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fitvids/1.0.1/jquery.fitvids.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".content").fitVids();
+        });
+    </script>
+</head>
+
+<body>
+    <div class="pure-g-r" id="layout">
+        <div class="sidebar pure-u">
+            <div class="cover-img" style="background-image: url('/theme/images/sidebar.jpg')">
+                <div class="cover-body">
+                    <header class="header">
+                        <hgroup>
+                            <img class="avatar" src="http://0.gravatar.com/avatar/7b74caf316a6c6716977fe84b56774c1?s=200x200">
+                            <h1 class="brand-main"><a href="https://glogiotatidis.github.io">It's around here, somewhere.</a></h1>
+                            <p class="tagline">My personal note keeping space on the internets</p>
+                                <p class="social">
+                                    <a href="https://github.com/glogiotatidis/">
+                                        <i class="fa fa-github fa-3x"></i>
+                                    </a>
+                                    <a href="https://twitter.com/glogiotatidis">
+                                        <i class="fa fa-twitter-square fa-3x"></i>
+                                    </a>
+                                </p>
+                        </hgroup>
+                    </header>
+                </div>
+            </div>
+        </div>
+    <div class="pure-u">
+        <div class="content">
+            <section class="post">
+                <header class="post-header">
+                    <h1>Fleet job to remove unused docker images</h1>
+                        <p class="post-meta">
+                            // under                                 <a class="post-category" href="https://glogiotatidis.github.io/tag/mozilla.html">Mozilla</a>
+                                <a class="post-category" href="https://glogiotatidis.github.io/tag/docker.html">Docker</a>
+                                <a class="post-category" href="https://glogiotatidis.github.io/tag/ops.html">ops</a>
+                        </p>
+                </header>
+            </section>
+            <p>In Engagement Engineering, the team I'm part of at
+<a href="https://www.mozilla.org">Mozilla</a>, we run two <a href="https://deis.io">Deis</a>
+clusters on AWS to host important websites including www.mozilla.org.</p>
+<p><a href="https://deis.io">Deis</a> is a Heroku-inspired PaaS which utilizes
+<a href="http://coreos.com/">CoreOS</a> and <a href="http://docker.io/">Docker</a>. It's a
+great open-source project,
+<a href="https://github.com/deis/deis">developed in the public</a>, with a great
+Community and commercially backed by Engine Yard.</p>
+<p>Apps on Deis run within Docker containers which run on CoreOS machines
+that form the Deis cluster. Each new release of your code, i.e. each
+new <em>deis pull</em> or <em>git push</em>, creates a new Docker image that is
+stored in the internal Deis Docker Registry and downloaded onto the
+CoreOS machines that are scheduled to run your code.</p>
+<p><a href="https://github.com/mozilla/bedrock">Bedrock</a> (the project name for
+www.mozilla.org) is a big website. It's Docker image weights about
+600MiB with all the translations, images and python dependencies. On
+every new release of Bedrock, which happens almost every day, the
+machines of our cluster pulled and stored about half a gig of space
+only for bedrock.</p>
+<p>Since all the Docker images are stored in the internal Deis Docker
+Registry anyway there is no need to store the stopped older docker
+containers or their images in the individual CoreOS instances. If we
+need to revert to an older release of Bedrock the machines will pull
+the needed layers from the Deis Docker Registry again.</p>
+<p>We built and deployed a <a href="https://github.com/coreos/fleet">Fleet</a>
+Service to remove the unused images:</p>
+<p><em>docker-cleanup.service</em></p>
+<div class="highlight"><pre><span class="k">[Unit]</span>
+<span class="na">Description</span><span class="o">=</span><span class="s">Clean up unused docker containers and images</span>
+
+<span class="k">[Service]</span>
+<span class="na">Type</span><span class="o">=</span><span class="s">oneshot</span>
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/bin/bash -c &#39;CONTAINERS=`docker ps -a -q -f status=exited`; if [[ ! -z $CONTAINERS ]]; then docker rm -v $CONTAINERS; fi; IMAGES=`docker images -f dangling=true -q`; if [[ ! -z $IMAGES ]]; then docker rmi $IMAGES; fi; echo &quot;Completed docker image cleanup.&quot;&#39;</span>
+
+<span class="k">[Install]</span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
+
+<span class="k">[X-Fleet]</span>
+<span class="na">Global</span><span class="o">=</span><span class="s">true</span>
+</pre></div>
+
+
+<p>The Service checks if there're any containers which are <em>exited</em> and
+removes them. Similarly checks if there are any <em>dangling</em> docker
+images and removes them too. Prints the <em>Completed docker image
+cleanup</em> text in the end so we can check through the
+<a href="https://deadmanssnitch.com/">Dead Mans Snitch</a> that the job run.</p>
+<p>The <em>X-fleet</em> directive instructs Fleet to run this service on each
+and every machine of the cluster.</p>
+<p>You can run this service and cleanup the images immediatelly with:</p>
+<div class="highlight"><pre>fleetctl start docker-cleanup.service
+</pre></div>
+
+
+<p>We also built a timer unit to schedule daily cleanups to keep things
+clean and tidy without our interaction:</p>
+<p><em>docker-cleanup.timer</em></p>
+<div class="highlight"><pre><span class="k">[Unit]</span>
+<span class="na">Description</span><span class="o">=</span><span class="s">Trigger clean up of unused docker containers and images</span>
+
+<span class="k">[Timer]</span>
+<span class="na">OnCalendar</span><span class="o">=</span><span class="s">daily</span>
+
+<span class="k">[X-Fleet]</span>
+<span class="na">Global</span><span class="o">=</span><span class="s">true</span>
+</pre></div>
+
+
+<p>After loading the cleanup service, load and start the timer</p>
+<div class="highlight"><pre>fleetctl load docker-cleanup.service
+fleetctl load docker-cleanup.timer
+fleetctl start docker-cleanup.timer
+</pre></div>
+
+
+<p>and the docker-cleanup.service will run <em>daily</em>.</p>
+<p>Note that <em>fleetctl list-units</em> will list your
+<em>docker-cleanup.service</em> as <em>dead</em> which is OK. It will run as
+expected when the <em>waiting</em> <em>docker-cleanup.timer</em> unit triggers.</p>
+<div class="highlight"><pre>core@ip-10-0-0-0 ~ $ fleetctl list-units
+UNIT                    MACHINE         ACTIVE      SUB
+docker-cleanup.service          1c919e41.../10.0.0.0    inactive    dead
+docker-cleanup.timer            1c919e41.../10.0.0.0    active      waiting
+</pre></div>
+            <a href="#" class="go-top">Go Top</a>
+<footer class="footer">
+    <p>&copy; Giorgos &ndash;
+        Built with <a href="https://github.com/PurePelicanTheme/pure-single">Pure Theme</a>
+        for <a href="http://blog.getpelican.com/">Pelican</a>
+    </p>
+</footer>        </div>
+    </div>
+    </div>
+    <script>
+        var $top = $('.go-top');
+
+        // Show or hide the sticky footer button
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 200) {
+                $top.fadeIn(200);
+            } else {
+                $top.fadeOut(200);
+            }
+        });
+
+        // Animate the scroll to top
+        $top.click(function(event) {
+            event.preventDefault();
+            $('html, body').animate({scrollTop: 0}, 300);
+        })
+
+        // Makes sure that the href="#" attached to the <a> elements
+        // don't scroll you back up the page.
+        $('body').on('click', 'a[href="#"]', function(event) {
+            event.preventDefault();
+        });
+    </script>
+
+</body>
+</html>
