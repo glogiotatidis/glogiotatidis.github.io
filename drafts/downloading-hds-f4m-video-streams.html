@@ -7,7 +7,7 @@
 
         <link rel="alternate"  href="https://glogiotatidis.github.io/feeds/all.atom.xml" type="application/atom+xml" title="giorgos Full Atom Feed"/>
 
-        <title>Fleet job to remove unused docker images // giorgos // My personal note keeping space on the internets</title>
+        <title>Downloading HDS (f4m) video streams. // giorgos // My personal note keeping space on the internets</title>
 
 
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.3.0/pure-min.css">
@@ -51,7 +51,7 @@
         <div class="content">
             <section class="post">
                 <header class="post-header">
-                    <h1>Fleet job to remove unused docker images</h1>
+                    <h1>Downloading HDS (f4m) video streams.</h1>
                         <p class="post-meta">
                             // under                                 <a class="post-category" href="https://glogiotatidis.github.io/tag/docker.html">Docker</a>
                         </p>
@@ -64,7 +64,35 @@ chunks which I guess is good if you want to jump on different points
 in the video or you have an unstable internet connection but really
 annoying if you just want to download the video and view it in a
 different player.</p>
-<p>This protocol is called <a href="https://en.wikipedia.org/wiki/Adaptive_bitrate_streaming#Adobe_Dynamic_Streaming_for_Flash">HDS (HTTP Dynamic Streaming)</a> and</p>
+<p>This protocol is called
+<a href="https://en.wikipedia.org/wiki/Adaptive_bitrate_streaming#Adobe_Dynamic_Streaming_for_Flash">HDS (HTTP Dynamic Streaming)</a>
+and usually the sites link to <code>f4m</code> manifest files. From the
+<a href="https://en.wikipedia.org/wiki/SWF">SWF Wikipedia Page</a> we read get
+the following definition for <code>f4m</code></p>
+<blockquote>
+<p>.f4m files are XML manifest files. Containing base64 FLV onMetaData
+headers for an Adobe version of bit rate control HTTP Live
+Streaming.</p>
+</blockquote>
+<p>Thankfully <a href="https://github.com/K-S-V/">K-S-V</a> provides
+<a href="https://github.com/K-S-V/Scripts/blob/master/AdobeHDS.php">a script</a>
+that reads these files, downloads all the announced chunks and finally
+assembles them into one video file. Interestingly the script is
+written in PHP cli mode (!) which probably you don't have installed
+locally.</p>
+<p>I created a Docker Image that installs whatever is needed to run the
+script and the actuall script. Using Docker magic you can now download
+.f4m manifests with a oneliner:</p>
+<div class="highlight"><pre>docker run -v `pwd`/video:/output giorgos/hds-downloader --delete --manifest &lt;MANIFEST_URL&gt;
+</pre></div>
+
+
+<p>For example</p>
+<div class="highlight"><pre>docker run -v `pwd`/video:/output giorgos/hds-downloader --delete --manifest  &quot;http://antennatvvod-vh.akamaihd.net/z/vods1/,c8e81912-517d-448c-bfe8-c083d7ef8819,.mp4.csmil/manifest.f4m?g=IMEQTLFUJHZE&amp;hdcore=3.8.0&amp;plugin=jwplayer-3.8.0.0&quot;
+</pre></div>
+
+
+<p>will save in <em>video</em> directory on the host a small tribute to the <a href="https://en.wikipedia.org/wiki/Back_to_the_Future">Back to the Future</a></p>
             <a href="#" class="go-top">Go Top</a>
 <footer class="footer">
     <p>&copy; Giorgos &ndash;
