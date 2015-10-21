@@ -70,7 +70,7 @@ and usually the sites link to <code>f4m</code> manifest files. From the
 <a href="https://en.wikipedia.org/wiki/SWF">SWF Wikipedia Page</a> we read get
 the following definition for <code>f4m</code></p>
 <blockquote>
-<p>.f4m files are XML manifest files. Containing base64 FLV onMetaData
+<p>.f4m files are XML manifest files. Containing base64 FLV on MetaData
 headers for an Adobe version of bit rate control HTTP Live
 Streaming.</p>
 </blockquote>
@@ -81,13 +81,13 @@ assembles them into one video file. Interestingly the script is
 written in PHP cli mode (!) which probably you don't have installed
 locally.</p>
 <p>I created a Docker Image that installs whatever is needed to run the
-script and the actuall script. Using Docker magic you can now download
-.f4m manifests with a oneliner:</p>
+script and the actual script. With a bit of Docker magic you can now
+download .f4m manifests with a one-liner:</p>
 <div class="highlight"><pre>docker run -v `pwd`/video:/output giorgos/hds-downloader --delete --manifest &lt;MANIFEST_URL&gt;
 </pre></div>
 
 
-<p>For example</p>
+<p>For example:</p>
 <div class="highlight"><pre>docker run -v `pwd`/video:/output giorgos/hds-downloader --delete --manifest  &quot;http://antennatvvod-vh.akamaihd.net/z/vods1/,c8e81912-517d-448c-bfe8-c083d7ef8819,.mp4.csmil/manifest.f4m?g=IMEQTLFUJHZE&amp;hdcore=3.8.0&amp;plugin=jwplayer-3.8.0.0&quot;
 </pre></div>
 

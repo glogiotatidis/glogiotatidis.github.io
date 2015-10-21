@@ -1,5 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>giorgos</title><link href="https://glogiotatidis.github.io/" rel="alternate"></link><link href="https://glogiotatidis.github.io/feeds/all.atom.xml" rel="self"></link><id>https://glogiotatidis.github.io/</id><updated>2015-10-13T00:00:00+03:00</updated><entry><title>Fleet job to remove unused docker images</title><link href="https://glogiotatidis.github.io/fleet-job-to-remove-unused-docker-images.html" rel="alternate"></link><updated>2015-10-13T00:00:00+03:00</updated><author><name>Giorgos</name></author><id>tag:glogiotatidis.github.io,2015-10-13:fleet-job-to-remove-unused-docker-images.html</id><summary type="html">&lt;p&gt;Engagement Engineering, the team that I'm part of at
+<feed xmlns="http://www.w3.org/2005/Atom"><title>giorgos</title><link href="https://glogiotatidis.github.io/" rel="alternate"></link><link href="https://glogiotatidis.github.io/feeds/all.atom.xml" rel="self"></link><id>https://glogiotatidis.github.io/</id><updated>2015-10-21T00:00:00+03:00</updated><entry><title>Downloading HDS (f4m) video streams.</title><link href="https://glogiotatidis.github.io/downloading-hds-f4m-video-streams.html" rel="alternate"></link><updated>2015-10-21T00:00:00+03:00</updated><author><name>Giorgos</name></author><id>tag:glogiotatidis.github.io,2015-10-21:downloading-hds-f4m-video-streams.html</id><summary type="html">&lt;p&gt;Some WebTV or other video streaming websites use a special Adobe
+(surprise, surprise) inspired protocol to stream their content. The
+special thing about this protocol is that the file is split into
+chunks which I guess is good if you want to jump on different points
+in the video or you have an unstable internet connection but really
+annoying if you just want to download the video and view it in a
+different player.&lt;/p&gt;
+&lt;p&gt;This protocol is called
+&lt;a href="https://en.wikipedia.org/wiki/Adaptive_bitrate_streaming#Adobe_Dynamic_Streaming_for_Flash"&gt;HDS (HTTP Dynamic Streaming)&lt;/a&gt;
+and usually the sites link to &lt;code&gt;f4m&lt;/code&gt; manifest files. From the
+&lt;a href="https://en.wikipedia.org/wiki/SWF"&gt;SWF Wikipedia Page&lt;/a&gt; we read get
+the following definition for &lt;code&gt;f4m&lt;/code&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;.f4m files are XML manifest files. Containing base64 FLV on MetaData
+headers for an Adobe version of bit rate control HTTP Live
+Streaming.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Thankfully &lt;a href="https://github.com/K-S-V/"&gt;K-S-V&lt;/a&gt; provides
+&lt;a href="https://github.com/K-S-V/Scripts/blob/master/AdobeHDS.php"&gt;a script&lt;/a&gt;
+that reads these files, downloads all the announced chunks and finally
+assembles them into one video file. Interestingly the script is
+written in PHP cli mode (!) which probably you don't have installed
+locally.&lt;/p&gt;
+&lt;p&gt;I created a Docker Image that installs whatever is needed to run the
+script and the actual script. With a bit of Docker magic you can now
+download .f4m manifests with a one-liner:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;docker run -v `pwd`/video:/output giorgos/hds-downloader --delete --manifest &amp;lt;MANIFEST_URL&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;For example:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;docker run -v `pwd`/video:/output giorgos/hds-downloader --delete --manifest  &amp;quot;http://antennatvvod-vh.akamaihd.net/z/vods1/,c8e81912-517d-448c-bfe8-c083d7ef8819,.mp4.csmil/manifest.f4m?g=IMEQTLFUJHZE&amp;amp;hdcore=3.8.0&amp;amp;plugin=jwplayer-3.8.0.0&amp;quot;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;will save in &lt;em&gt;video&lt;/em&gt; directory on the host a small tribute to the &lt;a href="https://en.wikipedia.org/wiki/Back_to_the_Future"&gt;Back to the Future&lt;/a&gt;&lt;/p&gt;</summary><category term="Docker"></category></entry><entry><title>Fleet job to remove unused docker images</title><link href="https://glogiotatidis.github.io/fleet-job-to-remove-unused-docker-images.html" rel="alternate"></link><updated>2015-10-13T00:00:00+03:00</updated><author><name>Giorgos</name></author><id>tag:glogiotatidis.github.io,2015-10-13:fleet-job-to-remove-unused-docker-images.html</id><summary type="html">&lt;p&gt;Engagement Engineering, the team that I'm part of at
 &lt;a href="https://www.mozilla.org"&gt;Mozilla&lt;/a&gt;, runs two &lt;a href="http://deis.io"&gt;Deis&lt;/a&gt;
 clusters on AWS to host important websites including www.mozilla.org.&lt;/p&gt;
 &lt;p&gt;&lt;a href="http://deis.io"&gt;Deis&lt;/a&gt; is a Heroku-inspired PaaS which utilizes
