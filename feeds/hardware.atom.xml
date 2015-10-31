@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>giorgos</title><link href="https://glogiotatidis.github.io/" rel="alternate"></link><link href="https://glogiotatidis.github.io/feeds/hardware.atom.xml" rel="self"></link><id>https://glogiotatidis.github.io/</id><updated>2015-10-31T00:00:00+02:00</updated><entry><title>Programming Pro Trinket with an Arduino</title><link href="https://glogiotatidis.github.io/programming-pro-trinket-with-an-arduino.html" rel="alternate"></link><updated>2015-10-31T00:00:00+02:00</updated><author><name>Giorgos</name></author><id>tag:glogiotatidis.github.io,2015-10-31:programming-pro-trinket-with-an-arduino.html</id><summary type="html">&lt;p&gt;&lt;a href="https://learn.adafruit.com/introducing-pro-trinket/"&gt;Pro Trinket&lt;/a&gt; is
+a ATmega328 based board by &lt;a href="http://adafruit.com/"&gt;Adafruit&lt;/a&gt;. It's
+compatible with Arduino IDE and most of the code written for Arduino.
+It's small factor, cheap and comes with neat accessories like this
+&lt;a href="https://learn.adafruit.com/adafruit-pro-trinket-lipoly-slash-liion-backpack"&gt;LiPo backpack addon&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Pro Trinket is cheaper, smaller and consumes less power than a typical
+Arduino board because it lacks things like the
+&lt;a href="https://en.wikipedia.org/wiki/FTDI"&gt;FTDI&lt;/a&gt; chip used to communicate
+between the programmer and the board.&lt;/p&gt;
+&lt;p&gt;To program the Pro Trinket you need to have an external FTDI board or
+figure out how to make programming over USB work with Linux. I opted
+for the first option and abused an Arduino for its FTDI chip.&lt;/p&gt;
+&lt;p&gt;Connections:
+ - Connect Arduino's Reset Pin with Ground. This will disable
+   Arduino's AVR and prevent it from interfering with the FDTI
+   singals.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Trinket Rx to Arduino Rx (Pin 0)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Trinket Tx to Arduino Tx (Pin 1)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Trinket 5V to Arduino 5V&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Trinket GND to Arduino GND&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Software:
+ - Install Trinket boards in Arduino IDE by following the
+  &lt;a href="https://learn.adafruit.com/introducing-pro-trinket/setting-up-arduino-ide"&gt;official instructions&lt;/a&gt;.
+ - Select Board: Arduino Pro 3v (or 5v depending on which you have)
+ FTDI
+ - Select Programmer: ArduinoISP. This is a critical step and different
+   from the standard instructions which suggest USBTinyISP. Since
+   we're using Arduino's FTDI chip we need to select ArduinoISP.&lt;/p&gt;
+&lt;p&gt;Connect Arduino to your computer over USB and click Upload just after
+you've pressed Reset on Trinket to enter the bootloader.&lt;/p&gt;
+&lt;p&gt;That's it!&lt;/p&gt;</summary><category term="arduino"></category><category term="trinket"></category><category term="programming"></category><category term="ftdi"></category></entry></feed>
