@@ -72,11 +72,13 @@ between the programmer and the board.</p>
 <p>To program the Pro Trinket you need to have an external FTDI board or
 figure out how to make programming over USB work with Linux. I opted
 for the first option and abused an Arduino for its FTDI chip.</p>
-<p>Connections:
- - Connect Arduino's Reset Pin with Ground. This will disable
+<p>Connections:</p>
+<ul>
+<li>
+<p>Connect Arduino's Reset Pin with Ground. This will disable
    Arduino's AVR and prevent it from interfering with the FDTI
    singals.</p>
-<ul>
+</li>
 <li>
 <p>Trinket Rx to Arduino Rx (Pin 0)</p>
 </li>
@@ -90,14 +92,22 @@ for the first option and abused an Arduino for its FTDI chip.</p>
 <p>Trinket GND to Arduino GND</p>
 </li>
 </ul>
-<p>Software:
- - Install Trinket boards in Arduino IDE by following the
-  <a href="https://learn.adafruit.com/introducing-pro-trinket/setting-up-arduino-ide">official instructions</a>.
- - Select Board: Arduino Pro 3v (or 5v depending on which you have)
- FTDI
- - Select Programmer: ArduinoISP. This is a critical step and different
+<p>Software:</p>
+<ul>
+<li>
+<p>Install Trinket boards in Arduino IDE by following the
+  <a href="https://learn.adafruit.com/introducing-pro-trinket/setting-up-arduino-ide">official instructions</a>.</p>
+</li>
+<li>
+<p>Select Board: Arduino Pro 3v (or 5v depending on which you have)
+ FTDI</p>
+</li>
+<li>
+<p>Select Programmer: ArduinoISP. This is a critical step and different
    from the standard instructions which suggest USBTinyISP. Since
    we're using Arduino's FTDI chip we need to select ArduinoISP.</p>
+</li>
+</ul>
 <p>Connect Arduino to your computer over USB and click Upload just after
 you've pressed Reset on Trinket to enter the bootloader.</p>
 <p>That's it!</p>
