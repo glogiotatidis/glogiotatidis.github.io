@@ -218,4 +218,55 @@ ssh: [chan 1] EOF sent (1)
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;I tried the &lt;code&gt;--timeout&lt;/code&gt; flag to increase timeout with no luck. Finally running duplicity with the &lt;code&gt;sftp&lt;/code&gt; backend made the problem go away. All my backup sets were available and nothing strange in the SSH logs. I do not have any hard facts on why I chose to go with &lt;code&gt;scp&lt;/code&gt; backend in the first place but it appears to be less stable compared to &lt;code&gt;sftp&lt;/code&gt;, albeit this is the first time I run into problems with it.&lt;/p&gt;</summary><category term="ops"></category></entry></feed>
+&lt;p&gt;I tried the &lt;code&gt;--timeout&lt;/code&gt; flag to increase timeout with no luck. Finally running duplicity with the &lt;code&gt;sftp&lt;/code&gt; backend made the problem go away. All my backup sets were available and nothing strange in the SSH logs. I do not have any hard facts on why I chose to go with &lt;code&gt;scp&lt;/code&gt; backend in the first place but it appears to be less stable compared to &lt;code&gt;sftp&lt;/code&gt;, albeit this is the first time I run into problems with it.&lt;/p&gt;</summary><category term="ops"></category></entry><entry><title>Snippet testing with Firefox on Docker</title><link href="https://glogiotatidis.github.io/snippet-testing-with-firefox-on-docker.html" rel="alternate"></link><updated>2015-04-28T00:00:00+03:00</updated><author><name>Giorgos</name></author><id>tag:glogiotatidis.github.io,2015-04-28:snippet-testing-with-firefox-on-docker.html</id><summary type="html">&lt;p&gt;Mozilla's &lt;a href="https://snippets.mozilla.com/"&gt;Snippets Service&lt;/a&gt; feeds
+Firefox for Desktop and Android with small HTML or JSON blobs with
+content to display about:home page. That's the page users get when
+they open up Firefox.&lt;/p&gt;
+&lt;p&gt;Desktop snippets are usually a line of text and an icon but the
+service supports much more complicated snippets. Multiple choice forms
+for our end of year fund raising campaigns, videos about
+&lt;a href="https://snippets.cdn.mozilla.net/media/files/e29ada39-11f4-4157-ae1c-1340d9455692.webm"&gt;our mission&lt;/a&gt;,
+interactions with the browser Chrome and others. We even had a HTML5
+game going once!&lt;/p&gt;
+&lt;p&gt;As the snippets increase more and more in complexity we need better
+ways to test them. Unfortunately we have limited automation for this
+but we made a big step towards a better snippet testing strategy:&lt;/p&gt;
+&lt;p&gt;Welcome Dockerized Firefox!&lt;/p&gt;
+&lt;p&gt;I created a
+&lt;a href="https://github.com/glogiotatidis/fx-docker/blob/firefox-base/Dockerfile"&gt;Dockerfile&lt;/a&gt;
+that installs everything needed to run Firefox on Debian. Then I setup
+some basic prefs to prevent the browser from warning when closing
+multiple tabs, or asking to become the default browser. Finally I made
+it easy to setup a custom snippet server URL so you can point to your
+snippets server. Run &lt;code&gt;docker build&lt;/code&gt; and voila! You can now run Firefox
+within Docker that instantly fetches snippets from your server. No
+need to reset the cache or open the DevTools to clear gSnippetsMap
+anymore. Restart the browser can you start fresh. ¡Viva Docker!&lt;/p&gt;
+&lt;p&gt;The &lt;a href="https://github.com/glogiotatidis/fx-docker/"&gt;GitHub repo&lt;/a&gt; is
+connected with Docker Registry and automatically builds Firefox images
+for all major releases starting from version 4.0. A bunch of
+&lt;a href="https://github.com/glogiotatidis/fx-docker/tree/firefox-base/bin"&gt;convenience scripts&lt;/a&gt;
+make branch generation and update easier.&lt;/p&gt;
+&lt;h2&gt;Fast testing&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Clone the fx-docker repository&lt;/li&gt;
+&lt;li&gt;Copy &lt;code&gt;./bin/local_variables.sh-dist&lt;/code&gt; to &lt;code&gt;./bin/local_variables.sh&lt;/code&gt;
+and update SNIPPET_HOST to your host.&lt;/li&gt;
+&lt;li&gt;Run &lt;code&gt;./bin/test.sh&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The final step will sequentially start Firefox browsers from version
+15.0 to the latest version. The browser gets auto-configured to fetch
+snippets from your server thus you only have to check that the snippet
+is OK and then close the browser window. In a moment the next Firefox
+version will appear.&lt;/p&gt;
+&lt;p&gt;You can avoid setting SNIPPET_HOST and test the production snippets
+against multiple versions of Firefox.&lt;/p&gt;
+&lt;p&gt;Using this you can test almost 30 different Firefox versions in ten
+minutes.&lt;/p&gt;
+&lt;p&gt;Links:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://github.com/glogiotatidis/fx-docker"&gt;fx-docker&lt;/a&gt; GitHub Repo&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://registry.hub.docker.com/u/giorgos/fx-docker/"&gt;fx-docker&lt;/a&gt; Docker Registry Repo&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/mozilla/snippets-service/"&gt;Snippet Service&lt;/a&gt; GitHub Repo&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://snippets.mozilla.com"&gt;Snippet Service&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</summary><category term="mozilla"></category><category term="snippets"></category><category term="docker"></category></entry></feed>

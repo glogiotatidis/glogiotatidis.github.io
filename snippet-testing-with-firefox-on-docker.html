@@ -63,25 +63,26 @@
 Firefox for Desktop and Android with small HTML or JSON blobs with
 content to display about:home page. That's the page users get when
 they open up Firefox.</p>
-<p>Desktop snippets are usually some text and an icon but the service
-supports much more complicated snippets. Multiple choice forms for our
-end of year fund raising campaigns, videos about
+<p>Desktop snippets are usually a line of text and an icon but the
+service supports much more complicated snippets. Multiple choice forms
+for our end of year fund raising campaigns, videos about
 <a href="https://snippets.cdn.mozilla.net/media/files/e29ada39-11f4-4157-ae1c-1340d9455692.webm">our mission</a>,
-interactions with the browser Chrome and others. We even we a whole
-HTML5 game going once!</p>
+interactions with the browser Chrome and others. We even had a HTML5
+game going once!</p>
 <p>As the snippets increase more and more in complexity we need better
 ways to test them. Unfortunately we have limited automation for this
 but we made a big step towards a better snippet testing strategy:</p>
 <p>Welcome Dockerized Firefox!</p>
-<p>I created a Dockerfile that installs everything needed to run Firefox
-on Debian. Then I setup some basic prefs to prevent the browser from
-warning me when I'm closing multiple tabs, or asking to become the
-default browser. Finally I made it easy to setup a custom snippet
-server URL so you can point to your snippets server. Run <code>docker
-build</code> and voila! You can now run Firefox within Docker that instantly
-fetches snippets from your server. No need to reset the cache or open
-the DevTools to clear gSnippetsMap anymore. Restart the browser can
-you start fresh. ¡Viva Docker!</p>
+<p>I created a
+<a href="https://github.com/glogiotatidis/fx-docker/blob/firefox-base/Dockerfile">Dockerfile</a>
+that installs everything needed to run Firefox on Debian. Then I setup
+some basic prefs to prevent the browser from warning when closing
+multiple tabs, or asking to become the default browser. Finally I made
+it easy to setup a custom snippet server URL so you can point to your
+snippets server. Run <code>docker build</code> and voila! You can now run Firefox
+within Docker that instantly fetches snippets from your server. No
+need to reset the cache or open the DevTools to clear gSnippetsMap
+anymore. Restart the browser can you start fresh. ¡Viva Docker!</p>
 <p>The <a href="https://github.com/glogiotatidis/fx-docker/">GitHub repo</a> is
 connected with Docker Registry and automatically builds Firefox images
 for all major releases starting from version 4.0. A bunch of
@@ -94,8 +95,13 @@ make branch generation and update easier.</p>
 and update SNIPPET_HOST to your host.</li>
 <li>Run <code>./bin/test.sh</code></li>
 </ol>
-<p>The final step will sequentially start Firefox browsers from version 15.0 to the latest version. The browser gets auto-configured to fetch snippets from your server thus you only have to check that the snippet is OK and then close the browser window. In a moment the next Firefox version will appear.</p>
-<p>You can avoid setting SNIPPET_HOST and test the production snippets against multiple versions of Firefox.</p>
+<p>The final step will sequentially start Firefox browsers from version
+15.0 to the latest version. The browser gets auto-configured to fetch
+snippets from your server thus you only have to check that the snippet
+is OK and then close the browser window. In a moment the next Firefox
+version will appear.</p>
+<p>You can avoid setting SNIPPET_HOST and test the production snippets
+against multiple versions of Firefox.</p>
 <p>Using this you can test almost 30 different Firefox versions in ten
 minutes.</p>
 <p>Links:</p>
