@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="giorgos, My personal note keeping space on the internets">
+
+        <link rel="alternate"  href="https://glogiotatidis.github.io/feeds/all.atom.xml" type="application/atom+xml" title="giorgos Full Atom Feed"/>
+
+        <title>Host your own music server with supysonic // giorgos // My personal note keeping space on the internets</title>
+
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.3.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://glogiotatidis.github.io/theme/css/pure.css">
+    <link rel="stylesheet" href="https://glogiotatidis.github.io/theme/css/pygments.css">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fitvids/1.0.1/jquery.fitvids.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".content").fitVids();
+        });
+    </script>
+</head>
+
+<body>
+    <div class="pure-g-r" id="layout">
+        <div class="sidebar pure-u">
+            <div class="cover-img" style="background-image: url('/theme/images/sidebar.jpg')">
+                <div class="cover-body">
+                    <header class="header">
+                        <hgroup>
+                            <img class="avatar" src="http://0.gravatar.com/avatar/7b74caf316a6c6716977fe84b56774c1?s=200x200">
+                            <h1 class="brand-main"><a href="https://glogiotatidis.github.io">giorgos</a></h1>
+                            <p class="tagline">My personal note keeping space on the internets</p>
+                                <p class="social">
+                                    <a href="https://github.com/glogiotatidis/">
+                                        <i class="fa fa-github fa-3x"></i>
+                                    </a>
+                                    <a href="https://twitter.com/glogiotatidis">
+                                        <i class="fa fa-twitter-square fa-3x"></i>
+                                    </a>
+                                </p>
+                        </hgroup>
+                    </header>
+                </div>
+            </div>
+        </div>
+    <div class="pure-u">
+        <div class="content">
+            <section class="post">
+                <header class="post-header">
+                    <h1>Host your own music server with supysonic</h1>
+                        <p class="post-meta">
+                            // under                                 <a class="post-category" href="https://glogiotatidis.github.io/tag/ops.html">ops</a>
+                                <a class="post-category" href="https://glogiotatidis.github.io/tag/homebrewed-web.html">homebrewed-web</a>
+                        </p>
+                </header>
+            </section>
+            <p>I like to self-host services to make things fit my needs instead of the other
+way around and to satisfy my need to control my data. Also remember that self
+hosting is really important for the health of the open web and internet.</p>
+<p>There are a couple of options for self-hosted media servers. I always go for
+FLOSS solutions, so <a href="https://plex.tv/">Plex</a> and friends are not an option. A
+couple of years ago I tried <a href="http://subsonic.org/">Subsonic</a>, including the
+<a href="http://madsonic.org/">MadSonic</a> and
+<a href="https://github.com/hakko/musiccabinet">Musicabinet</a> forks. Subsonic looked
+really outdated at that time, so that didn't last long. Musicabinet was second
+in my evaluation and it looked really promising. It had an automatic radio
+station generation from local content and included last.fm information to your
+library. A feature particularly useful for explorations in huge libraries shared
+between friends. Unfortunately Musicabinet was abandoned by its creator and
+eventually started to show its age. Last came MadSonic which is probably the
+most feature full and actively developed Subsonic fork to the day.</p>
+<p>All these shared the same problem: A heavy java-based codebase with a ton of
+features and a horrible user experience. And all I needed was a backend to
+stream music to my laptop and mainly to my Android phone. </p>
+<p>Since there is a great app for Subsonic on Android
+(<a href="https://github.com/daneren2005/Subsonic">DSub</a>) it sounded like I needed an
+app with a Subsonic compatible API.</p>
+<p>I tried <a href="http://ampache.org/">Ampache</a> which offers a Subsonic API along with
+its own, but I was unimpressed. Huge codebase, horrible UX now in PHP. In any
+case you're interested I created a
+<a href="https://github.com/glogiotatidis/ampache-docker">docker image for ampache</a> as
+well.</p>
+<p>And then I discovered <a href="https://github.com/spl0k/supysonic/">supysonic</a> a python
+implementation of Subsonic's API with transcoding support, which is really
+important for mobile streaming. </p>
+<p>Since supysonic only implements the API it's super simple. There's only a
+minimal web interface for configuration and basic links to players. Music
+catalog scanning is blazing fast too because supysonic doesn't mess with your
+library. It will only read metadata, make no stupid decisions about your library
+and will even server cover.jpg if it exists. I keep my library clean and tidy
+with <a href="http://beets.io/">Beets</a> which holds the crown of the single source of
+truth for my music collection.</p>
+<p>DSub connects, reads and streams the database successfully. While you can setup
+maximum bit-rate on DSub itself, you'll need to connect to supysonic's web
+interface to configure transcoding formats to fit your needs.</p>
+<p>I created a Docker Image for supysonic and you can get started within 10
+minutes. Just clone the repo at
+<a href="https://github.com/glogiotatidis/supysonic-docker">github.com/glogiotatidis/supysonic-docker</a> and follow the <a href="https://github.com/glogiotatidis/supysonic-docker/blob/master/README.md">instructions</a>.</p>
+            <a href="#" class="go-top">Go Top</a>
+<footer class="footer">
+    <p>&copy; Giorgos &ndash;
+        Built with <a href="https://github.com/PurePelicanTheme/pure-single">Pure Theme</a>
+        for <a href="http://blog.getpelican.com/">Pelican</a>
+    </p>
+</footer>        </div>
+    </div>
+    </div>
+    <script>
+        var $top = $('.go-top');
+
+        // Show or hide the sticky footer button
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 200) {
+                $top.fadeIn(200);
+            } else {
+                $top.fadeOut(200);
+            }
+        });
+
+        // Animate the scroll to top
+        $top.click(function(event) {
+            event.preventDefault();
+            $('html, body').animate({scrollTop: 0}, 300);
+        })
+
+        // Makes sure that the href="#" attached to the <a> elements
+        // don't scroll you back up the page.
+        $('body').on('click', 'a[href="#"]', function(event) {
+            event.preventDefault();
+        });
+    </script>
+
+</body>
+</html>

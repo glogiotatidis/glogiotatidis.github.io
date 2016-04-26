@@ -1,5 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>giorgos</title><link href="https://glogiotatidis.github.io/" rel="alternate"></link><link href="https://glogiotatidis.github.io/feeds/all.atom.xml" rel="self"></link><id>https://glogiotatidis.github.io/</id><updated>2015-11-12T00:00:00+02:00</updated><entry><title>Snippet testing with Firefox on Docker</title><link href="https://glogiotatidis.github.io/snippet-testing-with-firefox-on-docker.html" rel="alternate"></link><updated>2015-11-12T00:00:00+02:00</updated><author><name>Giorgos</name></author><id>tag:glogiotatidis.github.io,2015-11-12:snippet-testing-with-firefox-on-docker.html</id><summary type="html">&lt;p&gt;Mozilla's &lt;a href="https://snippets.mozilla.com/"&gt;Snippets Service&lt;/a&gt; feeds
+<feed xmlns="http://www.w3.org/2005/Atom"><title>giorgos</title><link href="https://glogiotatidis.github.io/" rel="alternate"></link><link href="https://glogiotatidis.github.io/feeds/all.atom.xml" rel="self"></link><id>https://glogiotatidis.github.io/</id><updated>2016-04-27T00:00:00+03:00</updated><entry><title>Host your own music server with supysonic</title><link href="https://glogiotatidis.github.io/host-your-own-music-server-with-supysonic.html" rel="alternate"></link><updated>2016-04-27T00:00:00+03:00</updated><author><name>Giorgos</name></author><id>tag:glogiotatidis.github.io,2016-04-27:host-your-own-music-server-with-supysonic.html</id><summary type="html">&lt;p&gt;I like to self-host services to make things fit my needs instead of the other
+way around and to satisfy my need to control my data. Also remember that self
+hosting is really important for the health of the open web and internet.&lt;/p&gt;
+&lt;p&gt;There are a couple of options for self-hosted media servers. I always go for
+FLOSS solutions, so &lt;a href="https://plex.tv/"&gt;Plex&lt;/a&gt; and friends are not an option. A
+couple of years ago I tried &lt;a href="http://subsonic.org/"&gt;Subsonic&lt;/a&gt;, including the
+&lt;a href="http://madsonic.org/"&gt;MadSonic&lt;/a&gt; and
+&lt;a href="https://github.com/hakko/musiccabinet"&gt;Musicabinet&lt;/a&gt; forks. Subsonic looked
+really outdated at that time, so that didn't last long. Musicabinet was second
+in my evaluation and it looked really promising. It had an automatic radio
+station generation from local content and included last.fm information to your
+library. A feature particularly useful for explorations in huge libraries shared
+between friends. Unfortunately Musicabinet was abandoned by its creator and
+eventually started to show its age. Last came MadSonic which is probably the
+most feature full and actively developed Subsonic fork to the day.&lt;/p&gt;
+&lt;p&gt;All these shared the same problem: A heavy java-based codebase with a ton of
+features and a horrible user experience. And all I needed was a backend to
+stream music to my laptop and mainly to my Android phone. &lt;/p&gt;
+&lt;p&gt;Since there is a great app for Subsonic on Android
+(&lt;a href="https://github.com/daneren2005/Subsonic"&gt;DSub&lt;/a&gt;) it sounded like I needed an
+app with a Subsonic compatible API.&lt;/p&gt;
+&lt;p&gt;I tried &lt;a href="http://ampache.org/"&gt;Ampache&lt;/a&gt; which offers a Subsonic API along with
+its own, but I was unimpressed. Huge codebase, horrible UX now in PHP. In any
+case you're interested I created a
+&lt;a href="https://github.com/glogiotatidis/ampache-docker"&gt;docker image for ampache&lt;/a&gt; as
+well.&lt;/p&gt;
+&lt;p&gt;And then I discovered &lt;a href="https://github.com/spl0k/supysonic/"&gt;supysonic&lt;/a&gt; a python
+implementation of Subsonic's API with transcoding support, which is really
+important for mobile streaming. &lt;/p&gt;
+&lt;p&gt;Since supysonic only implements the API it's super simple. There's only a
+minimal web interface for configuration and basic links to players. Music
+catalog scanning is blazing fast too because supysonic doesn't mess with your
+library. It will only read metadata, make no stupid decisions about your library
+and will even server cover.jpg if it exists. I keep my library clean and tidy
+with &lt;a href="http://beets.io/"&gt;Beets&lt;/a&gt; which holds the crown of the single source of
+truth for my music collection.&lt;/p&gt;
+&lt;p&gt;DSub connects, reads and streams the database successfully. While you can setup
+maximum bit-rate on DSub itself, you'll need to connect to supysonic's web
+interface to configure transcoding formats to fit your needs.&lt;/p&gt;
+&lt;p&gt;I created a Docker Image for supysonic and you can get started within 10
+minutes. Just clone the repo at
+&lt;a href="https://github.com/glogiotatidis/supysonic-docker"&gt;github.com/glogiotatidis/supysonic-docker&lt;/a&gt; and follow the &lt;a href="https://github.com/glogiotatidis/supysonic-docker/blob/master/README.md"&gt;instructions&lt;/a&gt;.&lt;/p&gt;</summary><category term="ops"></category><category term="homebrewed-web"></category></entry><entry><title>q</title><link href="https://glogiotatidis.github.io/q.html" rel="alternate"></link><updated>2016-01-29T00:00:00+02:00</updated><author><name>Giorgos</name></author><id>tag:glogiotatidis.github.io,2016-01-29:q.html</id><summary type="html"></summary><category term="docker"></category><category term="testing"></category></entry><entry><title>Snippet testing with Firefox on Docker</title><link href="https://glogiotatidis.github.io/snippet-testing-with-firefox-on-docker.html" rel="alternate"></link><updated>2015-11-12T00:00:00+02:00</updated><author><name>Giorgos</name></author><id>tag:glogiotatidis.github.io,2015-11-12:snippet-testing-with-firefox-on-docker.html</id><summary type="html">&lt;p&gt;Mozilla's &lt;a href="https://snippets.mozilla.com/"&gt;Snippets Service&lt;/a&gt; feeds
 Firefox for Desktop and Android with small HTML or JSON blobs with
 content to display about:home page. That's the page users get when
 they open up Firefox.&lt;/p&gt;

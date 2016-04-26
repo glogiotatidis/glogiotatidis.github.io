@@ -7,7 +7,7 @@
 
         <link rel="alternate"  href="https://glogiotatidis.github.io/feeds/all.atom.xml" type="application/atom+xml" title="giorgos Full Atom Feed"/>
 
-        <title>ops tag // giorgos // My personal note keeping space on the internets</title>
+        <title>homebrewed-web tag // giorgos // My personal note keeping space on the internets</title>
 
 
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.3.0/pure-min.css">
@@ -45,7 +45,7 @@
             <!-- A wrapper for all the blog posts -->
             <div class="posts">
                 <h1 class="content-subhead">
-Posts tagged 'ops'                </h1>
+Posts tagged 'homebrewed-web'                </h1>
                     <section class="post">
                         <header class="post-header">
                             <h3><a class="post-title" href="https://glogiotatidis.github.io/host-your-own-music-server-with-supysonic.html">Host your own music server with supysonic</a></h3>
@@ -61,58 +61,6 @@ really outdated at that time, so that didn't last long. Musicabinet was second
 in my evaluation ...</p></p>
                             <p class="post-meta">
                                 in <a href="https://glogiotatidis.github.io/category/software.html">software</a> &middot; Wed 27 April 2016
-                            </p>
-                        </header>
-                    </section>
-                    <section class="post">
-                        <header class="post-header">
-                            <h3><a class="post-title" href="https://glogiotatidis.github.io/fleet-job-to-remove-unused-docker-images.html">Fleet job to remove unused docker images</a></h3>
-                            <p class="post-meta"><p>Engagement Engineering, the team that I'm part of at
-<a href="https://www.mozilla.org">Mozilla</a>, runs two <a href="http://deis.io">Deis</a>
-clusters on AWS to host important websites including www.mozilla.org.</p>
-<p><a href="http://deis.io">Deis</a> is a Heroku-inspired PaaS which utilizes
-<a href="http://coreos.com/">CoreOS</a> and <a href="http://docker.io/">Docker</a>. It's a
-great open-source project,
-<a href="https://github.com/deis/deis">developed in the public</a>, with a great
-Community and commercially backed by Engine Yard.</p>
-<p>Apps on Deis run within Docker containers which run on CoreOS machines
-that form the Deis cluster. Each new release of your code, i.e. each
-new <em>deis pull</em> or <em>git push</em>, creates a new Docker image that is
-stored in the internal Deis Docker ...</p></p>
-                            <p class="post-meta">
-                                in <a href="https://glogiotatidis.github.io/category/software.html">software</a> &middot; Tue 13 October 2015
-                            </p>
-                        </header>
-                    </section>
-                    <section class="post">
-                        <header class="post-header">
-                            <h3><a class="post-title" href="https://glogiotatidis.github.io/list-the-extensions-of-files-under-a-directory.html">List the extensions of files under a directory</a></h3>
-                            <p class="post-meta"><p>I want to list the extensions of filenames in a directory, sorted and unique.</p>
-<p>First list all the files, leaving out directories using:</p>
-<div class="highlight"><pre>find -type f .
-</pre></div>
-
-
-<p>Then use <a href="https://en.wikipedia.org/wiki/AWK">awk</a> to get the last three characters of each line, i.e. filename.</p>
-<div class="highlight"><pre>find . -type f | awk &#39;{ print substr( $0, length($0) - 3, 4) }&#39;
-</pre></div>
-
-
-<p>AWK's <code>substr</code> function extracts four characters (last argument) of string $0 (first argument) starting at full lenth of the string minus three characters (second argument).</p>
-<p>This will list the extensions from all files in the current directory and all directories below.</p>
-<p>Now <code>sort</code> and <code>uniq</code> the output ...</p></p>
-                            <p class="post-meta">
-                                in <a href="https://glogiotatidis.github.io/category/software.html">software</a> &middot; Mon 15 June 2015
-                            </p>
-                        </header>
-                    </section>
-                    <section class="post">
-                        <header class="post-header">
-                            <h3><a class="post-title" href="https://glogiotatidis.github.io/duplicity-scp-backend-weirdness.html">Duplicity scp backend weirdness</a></h3>
-                            <p class="post-meta"><p>I'm a big fan of <a href="http://duplicity.nongnu.org/">Duplicity</a> and I use to backup my laptop to my office based server over <code>scp</code> which in its turn encrypts everything with <a href="https://en.wikipedia.org/wiki/EncFS">EncFS</a> and syncs everything up to my <a href="http://spideroak.com/">SpiderOak</a> account. I was going under a typical maintenance today and I run <code>duplicity collection-status</code> to see how many backup sets I have.</p>
-<p>Surprisingly duplicity returned only one full backup set more than a year old and no other backup sets. After some digging I found that the returned backup set was indeed the only full set I had but besides that I had many ...</p></p>
-                            <p class="post-meta">
-                                in <a href="https://glogiotatidis.github.io/category/software.html">software</a> &middot; Tue 28 April 2015
                             </p>
                         </header>
                     </section>
